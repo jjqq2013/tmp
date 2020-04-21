@@ -28,11 +28,13 @@ This tool starts a workbench in which you can freely manipulate files and networ
 It will initially do following things:
 - it mounts the host's rootfs to `/host-rootfs` 
 - it switches to the **host**'s network namespace 
-
-*Note: the host's rootfs, strictly speaking, means the rootfs of the filesystem namespace of `dockerd`,
-maybe different with the rootfs of the real host. This is also true for other `docker-*-geek` tools.*
-
 You can further run other docker-geek related commands or even `docker` cli itself in this workbench.  
+
+*
+Note: the host's rootfs, strictly speaking, means the rootfs of the filesystem namespace of `dockerd`,
+maybe different with the rootfs of the real host. 
+This is also true for other `docker-*-geek` tools.
+*
 
 ```
 docker-geek [OPTIONS] [COMMAND [ARGS...]]
