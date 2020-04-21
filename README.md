@@ -25,14 +25,14 @@ It also provides some extra features, although not necessary normally.
 ### `docker-geek` Run a privileged tool container in the host's network namespace
 
 This tool starts a workbench in which you can freely manipulate files and network of the host.
-It starts a docker-geek workbench (a privileged container) in which it
-- mounts the host's rootfs to `/host-rootfs` 
-- switches to the **host**'s network namespace 
+It will initially do following things:
+- it mounts the host's rootfs to `/host-rootfs` 
+- it switches to the **host**'s network namespace 
 
 *Note: the host's rootfs, strictly speaking, means the rootfs of the filesystem namespace of `dockerd`,
 maybe different with the rootfs of the real host. This is also true for other `docker-*-geek` tools.*
 
-You can further run other commands in this workbench.
+You can further run other docker-geek related commands or even `docker` cli itself in this workbench.  
 
 ```
 docker-geek [OPTIONS] [COMMAND [ARGS...]]
@@ -61,11 +61,7 @@ docker run --rm --interactive --tty ^
 
 ### `docker-container-geek` Start a docker-geek in which mount a container to /rootfs
 
-This tool starts a workbench in which you can freely manipulate files of a container.
-It starts a docker-geek workbench (a privileged container) in which it 
-- mounts target container's rootfs to `/rootfs`
-- mounts the host's rootfs to `/host-rootfs`
-- switches to the **host**'s network namespace
+You can freely manipulate files of target container.
 
 ```
 docker-container-geek [OPTIONS] CONTAINER_ID_OR_NAME [COMMAND [ARGS...]]
@@ -81,11 +77,7 @@ Note: the `/etc/resolv.conf`, `/etc/hostname`, `/etc/hosts` in the `/rootfs` wil
 
 ### `docker-container-geek-ns` Start a docker-geek in which mount a container to /rootfs and switch to its network namespace
 
-This tool starts a workbench in which you can freely manipulate files and network of a container.
-It starts a docker-geek workbench (a privileged container) in which it 
-- mounts target container's rootfs to `/rootfs`
-- mounts the host's rootfs to `/host-rootfs`
-- switches to **target container**'s network namespace 
+You can freely manipulate files and network of target container.
 
 ```
 docker-container-geek-ns [OPTIONS] CONTAINER_ID_OR_NAME [COMMAND [ARGS...]]
@@ -99,11 +91,7 @@ root@GEEK-cae89cdb65cd:/rootfs# ip address show
 
 ### `docker-image-geek` Start a docker-geek in which mount an image to /rootfs (as readonly by default)
 
-This tool starts a workbench in which you can freely view an image or container without running it.
-It starts a docker-geek workbench (a privileged container) in which it 
-- mounts the image or container to `/rootfs`
-- mounts the host's rootfs to `/host-rootfs`
-- switches to the **host**'s network namespace 
+You can freely view (or even change) an image or container without running it.
 
 ```
 docker-image-geek [OPTIONS] IMAGE_ID_OR_NAME [COMMAND [ARGS...]]
@@ -117,6 +105,13 @@ Notes:
 - only works when dockerd is using overlay type of storage.
 - by default, the image will be mounted as **readonly**. You can specify `--writable` option to make it writable.
 - you can specify a container id or name as the image id or name.
+
+### `docker-mount-image` Mount an image  (as readonly by default)
+
+```
+docker-mount-image [OPTIONS] IMAGE_ID_OR_NAME MOUNT_POINT
+```
+See notes of `docker-image-geek`.
 
 ### `docker-mount` Bind-mount a dir or file, among containers and the host
 
@@ -133,17 +128,6 @@ $ docker-mount /host_mnt/c/a/dir_or_file CONTAINER_ID_OR_NAME:/a/mountpoint
 ```
 $ docker-mount /host_mnt/a/dir_or_file CONTAINER_ID_OR_NAME:/a/mountpoint
 ```  
-
-### `docker-mount-image` Mount an image  (as readonly by default)
-
-```
-$ docker-mount-image busybox /rootfs-of-busybox
-```
-
-Notes:
-- only works when dockerd is using overlay type of storage.
-- by default, the image will be mounted as **readonly**. You can specify `--writable` option to make it writable.
-- you can specify a container id or name as the image id or name.
 
 ## Other Utilities
 
